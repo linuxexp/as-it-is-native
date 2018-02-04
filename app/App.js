@@ -31,27 +31,52 @@ export default class App extends Component {
     }
   };
 
+  state = {
+      title: {
+          header: "DataGrid",
+          subText: "As it is"
+      }
+  };
+
+  setNavTitle = (header, sub) => {
+    this.setState({
+        title: {
+            header: header,
+            subText: sub
+        }
+    });
+  };
+
   render() {
     return (
         <NativeRouter>
             <Navigation
-                renderNavBar={NavBar}
+                renderNavBar={() => <DgNavBar title={this.state.title} />
+                }
                 style={this.styles.bar}>
                 <Card
                     exact
                     path="/"
-                    component={Chapters}
+                    component={(props) => {
+                           return (<Chapters setTitle={this.setNavTitle.bind(this)} {...props} />);
+                        }
+                    }
                     backButtonTitle="Chapters"
+                    title="As it is"
                 />
                 <Card
                     exact
                     path="/chapter/:cid"
-                    component={Chapter}
+                    component={(props) => {
+                        return (<Chapter setTitle={this.setNavTitle.bind(this)} {...props} />);
+                    }}
+                    title="Chapter view"
                 />
                 <Card
                     exact
                     path="/chapter/:cid/verse/:vid"
                     component={Verse}
+                    title="verse view"
                 />
             </Navigation>
         </NativeRouter>

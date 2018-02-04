@@ -23,17 +23,30 @@ export default class DgNavBar extends Component {
 
     toolBar = () => {
 
+        const subText = (title) => {
+          if (title.subText) {
+            return (
+              <Subtitle>
+                  {title.subText}
+              </Subtitle>
+            );
+          }
+          return;
+        };
+
         const toolBar = () => {
             return (
-                <Header searchBar>
+                <Header style={{backgroundColor: "#FF4500"}} searchBar>
                     <Left>
                         <Button transparent>
                             <Icon style={this.style.button} name='arrow-back' />
                         </Button>
                     </Left>
                     <Body>
-                    <Title>As It Is</Title>
-                    <Subtitle>Chapters View</Subtitle>
+                    <Title>
+                        {this.props.title ? this.props.title.header: ""}
+                    </Title>
+                    {subText(this.props.title)}
                     </Body>
                     <Right>
                         <Button onPress={this.update.bind(this)} transparent>
