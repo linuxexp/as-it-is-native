@@ -32,8 +32,8 @@ export default class DgNavBar extends Component {
                         </Button>
                     </Left>
                     <Body>
-                    <Title>DataGrid</Title>
-                    <Subtitle>ReactNativeBase</Subtitle>
+                    <Title>As It Is</Title>
+                    <Subtitle>Chapters View</Subtitle>
                     </Body>
                     <Right>
                         <Button onPress={this.update.bind(this)} transparent>

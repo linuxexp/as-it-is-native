@@ -7,7 +7,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "lodash": "^4.17.5",
     "native-base": "^2.3.7",
+    "object-hash": "^1.2.0",
     "react": "16.2.0",
     "react-native": "0.52.2",
     "react-router": "^4.2.0",

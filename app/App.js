@@ -8,6 +8,9 @@ import React, { Component } from 'react';
 
 import Home from "./screens/Home";
 import Auth from "./screens/Auth";
+import Chapters from "./screens/Chapters";
+import Chapter from "./screens/Chapter";
+import Verse from "./screens/Verse";
 
 import { NativeRouter, Link } from 'react-router-native'
 import { Card, Navigation } from 'react-router-navigation'
@@ -33,18 +36,22 @@ export default class App extends Component {
         <NativeRouter>
             <Navigation
                 renderNavBar={NavBar}
-                style={this.styles.bar}
-                title="DataGrid">
+                style={this.styles.bar}>
                 <Card
                     exact
                     path="/"
-                    component={Auth}
-                    backButtonTitle="Auth"
+                    component={Chapters}
+                    backButtonTitle="Chapters"
                 />
                 <Card
                     exact
-                    path="/app"
-                    component={Home}
+                    path="/chapter/:cid"
+                    component={Chapter}
+                />
+                <Card
+                    exact
+                    path="/chapter/:cid/verse/:vid"
+                    component={Verse}
                 />
             </Navigation>
         </NativeRouter>
