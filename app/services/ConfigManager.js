@@ -1,4 +1,3 @@
-// TODO: This is garbage, needs to be converted to promises
 import {
     AsyncStorage
 } from "react-native";
@@ -18,7 +17,6 @@ const device = {
             return result;
         });
     },
-
     setConfig: (config) => {
         return AsyncStorage.setItem(configLocalKey, JSON.stringify(config));
     }
@@ -63,28 +61,41 @@ const self = {
     getSettings: () => self.localManager.settings || {},*/
 
     //TODO: supported functions
-    device: device,
-    init: device.getConfig,
-    markAsRead: (doc) => {
+    updateWithPromise: (promisedToDo) => {
         return device.getConfig().then((result) => {
             const config = result || {};
-            config.markedAsRead = config.markedAsRead || {};
-            config.markedAsRead[doc.id] = true;
-            return device.setConfig(config).then((result) => {
-               return config;
+            return promisedToDo(config)
+                            .then((updatedConfig) => {
+                   return device.setConfig(updatedConfig);
             });
         });
     },
-    markInBookmark: async (doc) => {
-        return device.getConfig().then((result) => {
-            const config = result || {};
-
-            config.markInBookmark = config.markInBookmark || {};
-            config.markInBookmark[doc.id] = true;
-
-            return device.setConfig(config).then((result) => {
-                return config;
+    device: device,
+    init: device.getConfig,
+    markAsRead: (doc) => {
+        return self.updateWithPromise((config) => {
+            const promise = new Promise((resolve, error) => {
+                config.markedAsRead = config.markedAsRead || {};
+                config.markedAsRead[doc.id] = true;
+                resolve(config);
             });
+            return promise;
+        });
+    },
+    markInBookmark: async (doc) => {
+        return self.updateWithPromise((config) => {
+           return new Promise((resolve, error) => {
+               config.markInBookmark = config.markInBookmark || {};
+               config.markInBookmark[doc.id] = true;
+               resolve(config);
+           });
+        });
+    },
+    clearConfig: () => {
+        return self.updateWithPromise((config) => {
+           return new Promise((resolve, error) => {
+              resolve({});
+           });
         });
     }
 };

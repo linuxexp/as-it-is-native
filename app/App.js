@@ -70,6 +70,8 @@ export default class App extends Component {
                  });
           });*/
 
+      // ConfigManager.clearConfig();
+
     return (
         <NativeRouter>
             <Navigation
