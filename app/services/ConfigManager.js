@@ -1,3 +1,4 @@
+// TODO: This is garbage, needs to be converted to promises
 import {
     AsyncStorage
 } from "react-native";
@@ -5,32 +6,34 @@ import {
 const configLocalKey = 'configManger';
 
 const device = {
-    getConfig: async () => {
-        const config = await AsyncStorage.getItem(configLocalKey);
-        return await JSON.parse(config) || {};
+    getConfig: () => {
+        const rtx = AsyncStorage.getItem(configLocalKey)
+            .then((response) => {
+                return JSON.parse(response) || {};
+            })
+            .catch((error) => {
+                return {};
+            });
+        return rtx.then((result) => {
+            return result;
+        });
     },
 
-    setConfig: async (config) => {
-        await AsyncStorage.setItem(configLocalKey, JSON.stringify(config));
+    setConfig: (config) => {
+        return AsyncStorage.setItem(configLocalKey, JSON.stringify(config));
     }
 };
 
 const self = {
 
-    localManager: device.getConfig(),
+    /*localManager: {},
     version: 0,
     updateConfig: async (updateCB) => {
-        self.localManager = device.getConfig();
+        self.localManager = await device.getConfig();
         updateCB();
         await device.setConfig(self.localManager);
-        self.localManager = device.getConfig();
+        self.localManager = await device.getConfig();
         self.version += 1;
-    },
-    markAsRead: async (doc) => {
-        await self.updateConfig(() => {
-            self.localManager.markedAsRead = self.localManager.markedAsRead || {};
-            self.localManager.markedAsRead[doc.id] = true;
-        });
     },
     clearAllRead: async () => {
         await self.updateConfig(() => {
@@ -42,12 +45,6 @@ const self = {
             return self.localManager.markedAsRead[doc.id];
         }
         return false;
-    },
-    markInBookmark: async (doc) => {
-        await self.updateConfig(() => {
-            self.localManager.markInBookmark = self.localManager.markInBookmark || {};
-            self.localManager.markInBookmark[doc.id] = true;
-        });
     },
     clearAllBookmarks: async () => {
         await updateConfig(() => {
@@ -63,7 +60,33 @@ const self = {
     getRead: () => self.localManager.markedAsRead || {},
     getAllBookmarks: () => self.localManager.markInBookmark || {},
     setSettings: async (settings) => await self.updateConfig(() => self.localManager.settings = settings),
-    getSettings: () => self.localManager.settings || {}
+    getSettings: () => self.localManager.settings || {},*/
+
+    //TODO: supported functions
+    device: device,
+    init: device.getConfig,
+    markAsRead: (doc) => {
+        return device.getConfig().then((result) => {
+            const config = result || {};
+            config.markedAsRead = config.markedAsRead || {};
+            config.markedAsRead[doc.id] = true;
+            return device.setConfig(config).then((result) => {
+               return config;
+            });
+        });
+    },
+    markInBookmark: async (doc) => {
+        return device.getConfig().then((result) => {
+            const config = result || {};
+
+            config.markInBookmark = config.markInBookmark || {};
+            config.markInBookmark[doc.id] = true;
+
+            return device.setConfig(config).then((result) => {
+                return config;
+            });
+        });
+    }
 };
 
 export default self;

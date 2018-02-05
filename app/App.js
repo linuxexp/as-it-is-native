@@ -19,6 +19,10 @@ import DgNavBar from "./components/DgNavBar";
 
 import ConfigManager from "./services/ConfigManager";
 
+import {
+    AsyncStorage
+} from "react-native";
+
 const NavBar = () => {
     return (
         <DgNavBar/>
@@ -58,14 +62,13 @@ export default class App extends Component {
 
   render() {
 
-      var a = ConfigManager
-          .setSettings({a: "c"})
-          .then((response) => {
-              const config = ConfigManager.getConfig();
-              console.warn("config ", JSON.stringify(config));
-          });
-
-      console.warn("a ", ConfigManager.getSettings());
+      /*ConfigManager.markAsRead({id: "la-la"})
+          .then(function(r) {
+             ConfigManager.device.getConfig()
+                 .then(function(k) {
+                    console.warn("manager ", k);
+                 });
+          });*/
 
     return (
         <NativeRouter>
