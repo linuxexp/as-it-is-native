@@ -38,13 +38,13 @@ export default class Chapter extends Component {
     };
 
     markAsRead = (verse) => {
-        ConfigManager.markAsRead(verse);
-        ToastAndroid.show('Marked as Read', ToastAndroid.SHORT);
+        ConfigManager.markAsRead(verse)
+            .then((r) => ToastAndroid.show('Marked as Read', ToastAndroid.SHORT));
     };
 
     markInBookmarks = (verse) => {
-        ConfigManager.markInBookmark(verse);
-        ToastAndroid.show('Marked into Bookmarks', ToastAndroid.SHORT);
+        ConfigManager.markInBookmark(verse)
+            .then((r) => ToastAndroid.show('Marked into Bookmarks', ToastAndroid.SHORT));
     };
 
     render() {
