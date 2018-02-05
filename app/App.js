@@ -43,16 +43,22 @@ export default class App extends Component {
         title: {
             header: header,
             subText: sub
-        }
+        },
+        stickyNodes: []
     });
+  };
+
+  setStickyNodes = (nodes) => {
+      this.setState({
+            stickyNodes: nodes
+      });
   };
 
   render() {
     return (
         <NativeRouter>
             <Navigation
-                renderNavBar={() => <DgNavBar title={this.state.title} />
-                }
+                renderNavBar={() => <DgNavBar title={this.state.title} stickyNodes={this.state.stickyNodes} />}
                 style={this.styles.bar}>
                 <Card
                     exact
@@ -75,7 +81,7 @@ export default class App extends Component {
                 <Card
                     exact
                     path="/chapter/:cid/verse/:vid"
-                    component={Verse}
+                    component={(props) => <Verse setStickyNodes={this.setStickyNodes.bind(this)} {...props} />}
                     title="verse view"
                 />
             </Navigation>

@@ -11,11 +11,18 @@ import {
     List, ListItem, Text
 } from 'native-base';
 
+import Utils from "../services/Utils";
+
 export default class Chapter extends Component {
 
     styles = {
       textNode: {
           padding: 15
+      },
+      sansNode: {
+          paddingLeft: 15,
+          paddingRight: 15,
+          paddingTop: 10
       }
     };
 
@@ -30,6 +37,13 @@ export default class Chapter extends Component {
             return purport.map((node, index) => <Text key={index} style={this.styles.textNode}>{node}</Text>);
         };
 
+        const sansNodes = verse.content.sans.map((sz) => Utils.buildFromAnnotated(sz, verse.synonyms));
+        // const sanNodeToText = (nodes) => nodes.map((sN, index) => <Text key={index} style={this.styles.sansNode}>{sN}</Text>);
+
+        if (this.props.setStickyNodes) {
+            this.props.setStickyNodes(sansNodes);
+        }
+
         return (
             <Container>
                 <Content>
@@ -40,9 +54,6 @@ export default class Chapter extends Component {
                             </Text>
                         </ListItem>
                     </List>
-                    <Text style={this.styles.textNode}>
-                        Sanksrit node will come here
-                    </Text>
                     {purportToText(verse.purport)}
                 </Content>
             </Container>
